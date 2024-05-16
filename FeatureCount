@@ -1,0 +1,10 @@
+featureCounts [options] -a <annotation_file> -o <output_file> input_file1 [SRR326899111_1.1] ...
+-a <annotation_file>: Path to the genome annotation file (GTF by default)
+-o <output_file>: Name of the output file with read counts
+input_file1 [input_file2]...: Paths to BAM/SAM files containing mapped reads (you can specify multiple files)
+-t <string>: Specify feature type (e.g. "exon" for counting reads on exons)
+-g <string>: Specify attribute type for features (e.g. "gene_id" for counting reads assigned to genes)
+-s <int>: Perform strand-specific read counting (0: unstranded, 1: stranded, 2: reversely stranded)
+-T <int>: Number of threads to use (for parallel processing)
+-M: Count multi-mapping reads (reads aligning to multiple locations)
+featureCounts -a genes.gtf -o gene_counts.txt sample1.bam sample2.bam
