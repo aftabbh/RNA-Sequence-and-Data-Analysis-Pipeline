@@ -1,0 +1,10 @@
+wget -O datafile.fastq.gz <URL-to-FASTQ-file>
+fastqc -o /path/to/output/directory /path/to/your/*.fastq-multiqc /path/to/output/directorycd /path/to/fastqc./fastqc /path/to/your/datafile.fastq
+fastqc /path/to/your/datafile.fastq
+fastqc /path/to/your/datafile1.fastq /path/to/your/datafile2.fastq /path/to/your/datafile3.fastq
+fastqc /path/to/your/*.fastq
+fastqc -t 4 /path/to/your/datafile.fastq
+fastqc -o /path/to/output/directory /path/to/your/*.fastq
+mkdir -p /path/to/output/directory
+fastqc -t 4 -o /path/to/output/directory /path/to/your/*.fastq
+firefox /path/to/output/directory/datafile_fastqc.html
