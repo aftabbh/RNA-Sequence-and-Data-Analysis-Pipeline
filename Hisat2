@@ -1,0 +1,6 @@
+hisat2-build /path/to/reference_genome.fasta genome_index_prefix
+hisat2 -p 8 -x genome_index_prefix -U input_reads.fastq -S output_aligned.bam
+hisat2 -p 8 -x genome_index_prefix -1 input_reads_1.fastq -2 input_reads_2.fastq -S output_aligned.bam
+hisat2-build /path/to/reference_genome.fasta genome_index
+hisat2 -p 8 -x genome_index -U /path/to/input_reads.fastq -S /path/to/output_aligned.bam
+hisat2 -p 8 -x genome_index -1 /path/to/input_reads_1.fastq -2 /path/to/input_reads_2.fastq -S /path/to/output_aligned.bam
