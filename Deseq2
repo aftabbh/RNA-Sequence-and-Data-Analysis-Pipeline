@@ -1,0 +1,70 @@
+source("https://bioconductor.org/biocLite.R")
+install.packages("bioconductor")
+library(DESeq2)
+DESeqDataSetFromMatrix: Creates a DESeqDataSet object from your count table.
+estimateSizeFactors: Estimates size factors for normalization.
+estimateDispersions: Estimates dispersion for each gene.
+lftShrink: Performs shrinkage for log2 fold changes.
+DESeq: Performs differential expression analysis.
+results: Extracts differential expression results (e.g., p-values, fold changes).
+library("DESeq2")
+
+# Assuming countData is a matrix of counts and colData is a DataFrame of sample information
+countData <- read.csv("path/to/count_data.csv", row.names = 1)
+colData <- read.csv("path/to/col_data.csv", row.names = 1)
+dds <- DESeqDataSetFromMatrix(countData = countData,
+                              colData = colData,
+                              design = ~ condition)
+dds <- dds[rowSums(counts(dds)) > 1, ]
+dds <- DESeq(dds)
+results <- results(dds)
+head(results)
+results <- results[order(results$padj), ]
+write.csv(as.data.frame(results), file = "deseq2_results.csv")
+library("DESeq2")
+
+countData <- as.matrix(read.csv("path/to/count_data.csv", row.names = "gene"))
+colData <- read.csv("path/to/col_data.csv", row.names = 1)
+dds <- DESeqDataSetFromMatrix(countData = countData, colData = colData, design = ~ condition)
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep, ]
+rld <- rlog(dds)  # or
+vsd <- vst(dds)
+dds <- DESeq(dds)
+res <- results(dds)
+resLFC <- lfcShrink(dds, coef="condition_treated_vs_control", type="apeglm")
+plotMA(res, ylim = c(-2, 2))
+plotPCA(rld, intgroup = "condition")
+write.csv(as.data.frame(res), file = "deseq2_results.csv")
+# Load DESeq2 library
+library("DESeq2")
+
+# Load data
+countData <- as.matrix(read.csv("path/to/count_data.csv", row.names = "gene"))
+colData <- read.csv("path/to/col_data.csv", row.names = 1)
+
+# Ensure that the row names in colData match the column names in countData
+all(rownames(colData) == colnames(countData))
+
+# Create DESeqDataSet
+dds <- DESeqDataSetFromMatrix(countData = countData, colData = colData, design = ~ condition)
+
+# Pre-filtering
+dds <- dds[rowSums(counts(dds)) >= 10, ]
+
+# Run DESeq
+dds <- DESeq(dds)
+
+# Get results
+res <- results(dds)
+res <- res[order(res$padj), ]
+
+# Log fold change shrinkage for visualization
+resLFC <- lfcShrink(dds, coef="condition_treated_vs_control", type="apeglm")
+
+# Export results to CSV
+write.csv(as.data.frame(res), file = "deseq2_results.csv")
+
+# Plot MA and PCA
+plotMA(res, ylim = c(-2, 2))
+plotPCA(rlog(dds), intgroup = "condition")
